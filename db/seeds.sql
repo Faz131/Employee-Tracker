@@ -1,3 +1,5 @@
+
+
 INSERT INTO department(id,d_name)
 VALUE(1,'Sales'),
      (2,'Marketing'),
@@ -13,3 +15,9 @@ INSERT INTO roles (id, title,salary,department_id)
                    (5,'HR Director',85000.00,5);
 
         
+INSERT INTO employee (id,first_name,last_name,role_id,manager_id)
+            VALUE     (1, 'John', 'Doe', 2, 4),
+                      (2, 'Jane', 'Smith', 1, 4),
+                      (3, 'Bob', 'Johnson', 2, 5),
+                      (4, 'Sarah', 'Adams', 3, NULL),
+                      (5, 'Mike', 'Williams', 3, NULL);

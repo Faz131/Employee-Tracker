@@ -35,7 +35,6 @@ const init = () => {
                 message: 'Do you want to exit?'
             }
 
-
         ])
         .then(answers => {
             console.log(`Now viewing ${answers.choice}`);
@@ -44,10 +43,18 @@ const init = () => {
                     break;
                 case 'View All Roles': viewRoles();
                     break;
+                case 'View All Employees': viewEmployees();
+                    break;
+
+                case 'Add a Department': addDepartment();
+                    break;
+                case 'Add a Role': addRoles();
+                    break;
             }
         })
 };
 
+// Prompt to view Department database
 init();
 const viewDept = () => {
     db.query(`SELECT * FROM department`, (err, results) => {
@@ -56,12 +63,84 @@ const viewDept = () => {
     })
 };
 
+// Prompt to view Employee roles
 const viewRoles = () => {
     db.query(`SELECT * FROM roles`, (err, results) => {
         err ? console.error(err) : console.table(results);
         init();
     })
 };
+
+// Prompt to view Employees
+const viewEmployees = () => {
+    db.query(`SELECT * FROM employee`, (err, results) => {
+        err ? console.error(err) : console.table(results);
+        init();
+    })
+};
+
+// Prompt to add a new
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What Deparment would you like to add?',
+            name: 'addDepartment'
+        }
+    ]).then(answers => {
+        db.query(`INSERT INTO department(d_name)VALUES(?)`, answers.addDepartment, (err, results) => {
+            if (err) {
+                console.log(err)
+            } else {
+                db.query(`SELECT * FROM department`, (err, results) => {
+                    err ? console.error(err) : console.table(results);
+                    init();
+                })
+            }
+        })
+    })
+};
+
+const addRoles = () => {
+    const newRole = () => db.promise().query(`SELECT * FROM department`)
+        .then((rows) => {
+            let roleNames = rows[0].map(obj => obj.name);//copys Roles data and adds a new entry to index 0
+            return roleNames
+        })
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'What role would you like to add?',
+                name: 'roleTitle'
+            },
+            {
+                type: 'input',
+                message: 'What is the salary of this role?',
+                name: 'roleSalary'
+            },
+
+            {
+                type: 'list',
+                message: 'What department does this new role belong in?',
+                name: 'addDepartment',
+                choices: newRole
+            }
+        ]).then(answers => {
+            db.promise().query(`SELECT * FROM department WHERE name =?`, answers.addDepartment).then(answers => {
+                let roleID = answers[0].map(obj.id);
+                // console.log(roleID);
+                return roleID[0]
+            })
+                .then(roleID => {
+                    db.prome().query(`INSERT INTO roles(title,salary,department_id)VALUES(?,?,?)`, [answers.roleTitle, answers.roleSalary, roleID]);
+                    init()
+                })
+        })
+};
+
+
+
 
 
     // async function viewStartMenu() {
