@@ -7,12 +7,19 @@ VALUE(1,'Sales'),
      (4,'IT'),
      (5,'Human Resources');
 
-INSERT INTO roles (id, title,salary,department_id)
-            VALUE  (1,'Sales Associate',60000.00,1),
-                   (2,'Marketing Manager',80000.00,2),
-                   (3,'Finance Manager',70000.00,3),
-                   (4,'IT engineer',30000.00,4),
-                   (5,'HR Director',85000.00,5);
+-- INSERT INTO roles (id, title,salary,department_id)
+--             VALUE  (1,'Sales Associate',60000.00,1),
+--                    (2,'Marketing Manager',80000.00,2),
+--                    (3,'Finance Manager',70000.00,3),
+--                    (4,'IT engineer',30000.00,4),
+--                    (5,'HR Director',85000.00,5);
+
+INSERT INTO roles (title,salary,department_id)
+            VALUE  ('Sales Associate',60000.00,1),
+                   ('Marketing Manager',80000.00,2),
+                   ('Finance Manager',70000.00,3),
+                   ('IT engineer',30000.00,4),
+                   ('HR Director',85000.00,5);
 
         
 INSERT INTO employee (id,first_name,last_name,role_id,manager_id)

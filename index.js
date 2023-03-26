@@ -79,7 +79,7 @@ const viewEmployees = () => {
     })
 };
 
-// Prompt to add a new
+// Prompt to add a new department
 const addDepartment = () => {
     inquirer.prompt([
         {
@@ -103,10 +103,10 @@ const addDepartment = () => {
 
 const addRoles = () => {
     const newRole = () => db.promise().query(`SELECT * FROM department`)
-        .then((rows) => {
-            let roleNames = rows[0].map(obj => obj.name);//copys Roles data and adds a new entry to index 0
-            return roleNames
-        })
+    // .then((rows) => {
+    //     let roleNames = rows[0].map(obj => obj.name);//copys Roles data and adds a new entry to index 0
+    //     return roleNames
+    // })
     inquirer
         .prompt([
             {
@@ -117,7 +117,8 @@ const addRoles = () => {
             {
                 type: 'input',
                 message: 'What is the salary of this role?',
-                name: 'roleSalary'
+                name: 'roleSalary',
+
             },
 
             {
@@ -127,24 +128,25 @@ const addRoles = () => {
                 choices: newRole
             }
         ]).then(answers => {
-            db.promise().query(`SELECT * FROM department WHERE name =?`, answers.addDepartment).then(answers => {
-                let roleID = answers[0].map(obj.id);
-                // console.log(roleID);
-                return roleID[0]
-            })
+            db.promise().query(`SELECT id FROM department WHERE name = ?`, answers.addDepartment)
+                .then(answers => {
+                    let roleID = answers[0].map(obj.id);
+
+                    return roleID[0]
+                })
                 .then(roleID => {
-                    db.prome().query(`INSERT INTO roles(title,salary,department_id)VALUES(?,?,?)`, [answers.roleTitle, answers.roleSalary, roleID]);
+                    db.promise().query(`INSERT INTO roles(title,salary,department_id)VALUES(?,?,?)`, [answers.roleTitle, answers.roleSalary, roleID]);
                     init()
                 })
         })
 };
 
 
+// Create a new employee
 
 
+// async function viewStartMenu() {
+//     await startMenu();
+// }
 
-    // async function viewStartMenu() {
-    //     await startMenu();
-    // }
-
-    // viewStartMenu();
+// viewStartMenu();
