@@ -11,7 +11,7 @@ const db = mysql.createConnection(
         // MySQL username,
         user: 'root',
         // MySQL password
-        password: '',
+        password: 'Juventus131!',
         database: 'employees_db'
     },
     console.log(`Connected to the employees_db database.`)
@@ -103,10 +103,10 @@ const addDepartment = () => {
 
 const addRoles = () => {
     const newRole = () => db.promise().query(`SELECT * FROM department`)
-    // .then((rows) => {
-    //     let roleNames = rows[0].map(obj => obj.name);//copys Roles data and adds a new entry to index 0
-    //     return roleNames
-    // })
+        .then((rows) => {
+            let roleNames = rows[0].map(obj => obj.name);//copys Roles data and adds a new entry to index 0
+            return roleNames
+        })
     inquirer
         .prompt([
             {
