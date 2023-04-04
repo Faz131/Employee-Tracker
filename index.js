@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 // Import and require mysql2
 const mysql = require('mysql2');
+require('dotenv').config();
 
 const departments = ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role']
 
@@ -11,7 +12,7 @@ const db = mysql.createConnection(
         // MySQL username,
         user: 'root',
         // MySQL password
-        password: 'Juventus131!',
+        password: process.env.DB_PASSWORD,
         database: 'employees_db'
     },
     console.log(`Connected to the employees_db database.`)
